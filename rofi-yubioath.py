@@ -1,4 +1,4 @@
-from ykman.device import connect_to_device
+from ykman.device import list_all_devices, scan_devices
 from yubikit.core.smartcard import SmartCardConnection
 import yubikit.oath
 import subprocess
@@ -26,9 +26,8 @@ def build_creds_string(credDict):
     credsString = credsString[:-1]
     return credsString
 
-
-connection, device, info = connect_to_device(
-        connection_types=[SmartCardConnection])
+device, info = list_all_devices()[0]
+connection = device.open_connection(SmartCardConnection)
 
 session = yubikit.oath.OathSession(connection)
 creds = session.calculate_all()
